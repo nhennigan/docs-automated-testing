@@ -1,0 +1,21 @@
+:caption: ~/spread_test_example/tests/example_tutorial/task.yaml
+
+###########################################
+# IMPORTANT
+# Comments matter!
+# The docs use the wrapping comments as
+# markers for including said instructions
+# as snippets in the docs.
+###########################################
+summary: Example tutorial
+
+kill-timeout: 10m
+
+execute: |
+  wget https://download.stateful.com/runme/3.14.0/runme_linux_x86_64.tar.gz
+  tar -xvf runme_linux_x86_64.tar.gz
+  sudo mv runme /usr/local/bin/
+  which runme
+  sudo chmod +x /usr/local/bin/runme
+  runme run --all --allow-unnamed --filename=getting-started.md
+

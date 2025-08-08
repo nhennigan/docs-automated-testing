@@ -1,0 +1,22 @@
+:caption: ~/spread_test_example/tests/example_tutorial/task.yaml
+
+###########################################
+# IMPORTANT
+# Comments matter!
+# The docs use the wrapping comments as
+# markers for including said instructions
+# as snippets in the docs.
+###########################################
+summary: Example tutorial
+
+kill-timeout: 5m
+
+execute: |
+  # [docs:make-bash-executable]
+  chmod +x example_bash_script.sh
+  # [docs:make-bash-executable-end]
+
+  # [docs:execute-bash-script]
+  bash example_bash_script.sh
+  # [docs:execute-bash-script-end]
+  #
