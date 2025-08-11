@@ -57,15 +57,7 @@ It may take a few minutes for the cluster to be ready. To confirm the
 installation was successful, use `k8s status` with the `wait-ready` flag
 to wait for {{product}} to bring up the cluster:
 
-```{"name":"wait "]
-sleep 180 
-```
-
-```{"name":"Wait for cluster ready"}
-sudo k8s status  
-```
-
-```{"name": "wait for real "}
+```{"name": "Wait for the cluster to be ready "}
 sudo k8s status --wait-ready --timeout 3m 
 ```
 

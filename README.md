@@ -1,7 +1,5 @@
 # docs-automated-testing
-Automated testing straight from our docs
-
-This repo uses Spread and Runme. 
+Automated testing straight from our docs. This repo uses Spread and Runme to automatically test a simple hello world bash script and a getting started tutorial.
 
 ## Install Spread 
 
@@ -30,11 +28,11 @@ spread --list
 ## Run hello world test 
 
 ```
-spread multipass:ubuntu-24.04-64:tests/hello_world
+spread -vv -debug multipass:ubuntu-24.04-64:tests/hello_world
 ```
 
 ## Run getting started tutorial 
 
 ```
-spread multipass:ubuntu-24.04-64:tests/example_tutorial
+spread -vv -debug multipass:ubuntu-24.04-64:tests/example_tutorial
 ```
