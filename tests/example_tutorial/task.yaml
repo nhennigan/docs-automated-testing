@@ -17,5 +17,5 @@ execute: |
   sudo mv runme /usr/local/bin/
   which runme
   sudo chmod +x /usr/local/bin/runme
-  runme run --all --allow-unnamed --filename=getting-started.md
+  runme run --all --filename=getting-started.md
 

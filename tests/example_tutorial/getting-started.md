@@ -22,7 +22,7 @@ isolated working environment.
 
 Install the {{product}} `k8s` snap with:
 
-```{"name":"install snap"}
+```{"tag":"execute","name":"install snap"}
 sudo snap install k8s --classic --channel=1.33-classic/stable
 ```
 
@@ -61,11 +61,13 @@ to wait for {{product}} to bring up the cluster:
 sudo k8s status --wait-ready --timeout 3m 
 ```
 
+```{warning}
 This command waits a few minutes before timing out.
 On a very slow network connection, or a system with very limited resources,
 this default timeout might be insufficient resulting in a "Context canceled"
 error. Please first ensure that your machine meets the system requirements to run a Kubernetes cluster. Then, you can either increase the timeout using the  `--timeout`
 flag or re-run the command to continue waiting until the cluster is ready.
+```
 
 ### Access Kubernetes
 
