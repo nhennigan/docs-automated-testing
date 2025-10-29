@@ -1,21 +1,127 @@
 :caption: ~/spread_test_example/tests/example_tutorial/task.yaml
 
-###########################################
-# IMPORTANT
-# Comments matter!
-# The docs use the wrapping comments as
-# markers for including said instructions
-# as snippets in the docs.
-###########################################
 summary: Example tutorial
 
 kill-timeout: 10m
 
 execute: |
-  wget https://download.stateful.com/runme/3.14.0/runme_linux_x86_64.tar.gz
-  tar -xvf runme_linux_x86_64.tar.gz
-  sudo mv runme /usr/local/bin/
-  which runme
-  sudo chmod +x /usr/local/bin/runme
-  runme run --all --filename=getting-started.md
+  function repeat_checks {
+    MAX_RETRIES=10
+    for i in $(seq 1 $MAX_RETRIES); do
+      echo $i
+      runme run "$1" > output.txt
+      cat output.txt
+      if grep -q "$2" output.txt ; then
+        break
+      elif [[ "$i" == "$MAX_RETRIES" ]]; then
+        exit 1
+      else
+        sleep 1
+      fi
+    done
+  }
+  MAX_RETRIES=10
+  runme run "install snap"
+  runme run "bootstrap cluster"
+  runme run "Wait for the cluster to be ready"
+  repeat_checks "get nodes" 'Ready'
+  #  for i in $(seq 1 $MAX_RETRIES); do
+  #    echo $i
+  #    runme run "get nodes" > output.txt
+  #    cat output.txt
+  #    if grep -q "Ready" output.txt ; then 
+  #      break
+  #    elif [[ "$i" == "$MAX_RETRIES" ]]; then 
+  #      exit 1 
+  #    else 
+  #      sleep 1 
+  #    fi
+  #  done
+  #  repeat_checks "get services" "Running"
+  runme run "get services"
+  #  for i in $(seq 1 $MAX_RETRIES); do
+  #    echo $i
+  #    runme run "get pods -n kube-system" > output.txt
+  #    cat output.txt
+  #    if grep -q "Running" output.txt ; then
+  #      break
+  #    elif [[ "$i" == "$MAX_RETRIES" ]]; then
+  #      exit 1
+  #    else
+  #      sleep 1
+  #    fi
+  #  done
+  
+  runme run "deploy nginx"
+  repeat_checks "check nginx" "Running"
+  #  for i in $(seq 1 $MAX_RETRIES); do
+  #    echo $i
+  #    runme run "check nginx" > output.txt
+  #    cat output.txt
+  #    if grep -q "Running" output.txt ; then
+  #      break
+  #    elif [[ "$i" == "$MAX_RETRIES" ]]; then
+  #      exit 1
+  #    else
+  #      sleep 1
+  #    fi
+  #  done
+  runme run "remove nginx"
+  repeat_checks "check nginx removed" "No resources found in default namespace."
+  #  for i in $(seq 1 $MAX_RETRIES); do
+  #    echo $i
+  #    runme run "check nginx removed" > output.txt
+  #    cat output.txt
+  #    if grep -q "No resources found in default namespace." output.txt ; then
+  #      break
+  #    elif [[ "$i" == "$MAX_RETRIES" ]]; then
+  #      exit 1
+  #    else
+  #      sleep 1
+  #    fi
+  #  done
+  
+  runme run "enable local storage"
+  repeat_checks "check local storage" "enabled at /var/snap/k8s/common/rawfile-storage" 
+  #  for i in $(seq 1 $MAX_RETRIES); do
+  #  echo $i
+  #  runme run "check local storage" > output.txt
+  #  cat output.txt
+  #  if grep -q "enabled at /var/snap/k8s/common/rawfile-storage" output.txt ; then
+  #    break
+  #  elif [[ "$i" == "$MAX_RETRIES" ]]; then
+  #    exit 1
+  #  else
+  #    sleep 1
+  #  fi
+  #  done
+  runme run "create pod with pvc"
+  repeat_checks "view pvc" "Bound"
+  #  for i in $(seq 1 $MAX_RETRIES); do
+  #  echo $i
+  #  runme run "view pvc" > output.txt
+  #  cat output.txt
+  #  if grep -q "Bound" output.txt ; then
+  #    break
+  #  elif [[ "$i" == "$MAX_RETRIES" ]]; then
+  #    exit 1
+  #  else
+  #    sleep 1
+  #  fi
+  #  done
+  repeat_checks "view pvc pod" "Running"
+  #  for i in $(seq 1 $MAX_RETRIES); do
+  #  echo $i
+  #  runme run "view pvc pod" > output.txt
+  #  cat output.txt
+  #  if grep -q "Running" output.txt ; then
+  #    break
+  #  elif [[ "$i" == "$MAX_RETRIES" ]]; then
+  #    exit 1
+  #  else
+  #    sleep 1
+  #  fi
+  #  done
+  runme run "remove pod and pvc"
+  runme run "disable local storage" 
 

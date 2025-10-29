@@ -42,5 +42,11 @@ backends:
 suites:
   tests/:
     summary: example tutorial
+    prepare: |
+      wget https://download.stateful.com/runme/3.14.0/runme_linux_x86_64.tar.gz
+      tar -xvf runme_linux_x86_64.tar.gz
+      sudo mv runme /usr/local/bin/
+      which runme
+      sudo chmod +x /usr/local/bin/runme
     systems:
       - ubuntu-24.04-64

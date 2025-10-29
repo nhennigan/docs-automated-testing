@@ -22,7 +22,7 @@ isolated working environment.
 
 Install the {{product}} `k8s` snap with:
 
-```{"tag":"execute","name":"install snap"}
+```{"name":"install snap"}
 sudo snap install k8s --classic --channel=1.33-classic/stable
 ```
 
@@ -57,7 +57,7 @@ It may take a few minutes for the cluster to be ready. To confirm the
 installation was successful, use `k8s status` with the `wait-ready` flag
 to wait for {{product}} to bring up the cluster:
 
-```{"name": "Wait for the cluster to be ready "}
+```{"name": "Wait for the cluster to be ready"}
 sudo k8s status --wait-ready --timeout 3m 
 ```
 
@@ -187,7 +187,7 @@ sudo k8s kubectl get pvc myclaim
 ```
 You can inspect the storage-writer-pod with:
 
-```{"name":"view ovc pod"}
+```{"name":"view pvc pod"}
 sudo k8s kubectl describe pod storage-writer-pod
 ```
 
