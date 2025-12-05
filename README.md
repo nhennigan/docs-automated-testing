@@ -10,6 +10,12 @@ Go to the Spread repo and install Spread using go install. Installing Spread fro
 ```
 ├── spread.yaml
 └── tests
+    ├── disa-stig
+    │   ├── disa-stig-audit.md
+    │   ├── disa-stig.md
+    │   ├── fips.md
+    │   ├── task.yaml
+    │   └── ufw.md
     ├── example_tutorial
     │   ├── getting-started.md
     │   └── task.yaml

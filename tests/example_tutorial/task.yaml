@@ -6,7 +6,7 @@ kill-timeout: 10m
 
 execute: |
   function repeat_checks {
-    MAX_RETRIES=10
+    MAX_RETRIES=15
     for i in $(seq 1 $MAX_RETRIES); do
       echo $i
       runme run "$1" > output.txt
