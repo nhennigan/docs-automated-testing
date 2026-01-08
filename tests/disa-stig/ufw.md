@@ -51,7 +51,7 @@ sudo sysctl -p
 
 Set UFW forwarding rules using one of the following methods.
 
-`````{tabs}
+<!-- `````{tabs}
 ````{group-tab} Allow system wide
 Packet forwarding can be allowed system wide by editing `/etc/default/ufw`
 and changing `DEFAULT_FORWARD_POLICY` to:
@@ -72,7 +72,32 @@ sudo ufw route allow from 10.1.0.0/16 to 10.0.20.0/24
 sudo ufw route allow from 10.1.0.0/16 to 10.1.0.0/16
 ```
 ````
-`````
+````` -->
+
+::::{tab-set}
+:::{tab-item} Allow system wide
+Packet forwarding can be allowed system wide by editing `/etc/default/ufw`
+and adding:
+
+```sh {"name": "allow system wide forward"}
+DEFAULT_FORWARD_POLICY="ACCEPT"
+```
+
+:::
+
+:::{tab-item} By subnet
+A less permissive approach would be to allow forwarding traffic only
+between the subnets of the pods and the hosts. For example, assuming the
+pods CIDR is `10.1.0.0/16` and the cluster nodes are in `10.0.20/24`, you
+could:
+
+```sh {"name":"allow by subnet forward"}
+sudo ufw route allow from 10.1.0.0/16 to 10.0.20.0/24
+sudo ufw route allow from 10.1.0.0/16 to 10.1.0.0/16
+```
+
+:::
+::::
 
 ## Allow access to the Kubernetes services
 
@@ -84,14 +109,14 @@ sudo ufw allow 6443/tcp
 
 Allow access to kubelet on all nodes:
 
-```sh
+```sh {"name":"allow kubelet"}
 sudo ufw allow 10250/tcp
 ```
 
 Allow access to kube-controller-manager and kube-scheduler on control
 plane nodes (e.g. for metrics gathering):
 
-```sh
+```sh {"name":"allow kube-controller-manager"}
 sudo ufw allow 10257/tcp
 sudo ufw allow 10259/tcp
 ```
@@ -102,29 +127,31 @@ To form a High Availability (HA) cluster the datastore used by
 Kubernetes (etcd or k8s-dqlite) needs to establish a direct connection
 among its peers.
 
-`````{tabs}
-````{group-tab} etcd
+::::{tab-set}
+:::{tab-item} etcd
 Allow access to the etcd peer and client port:
 
-```sh
+```sh {"name":"allow etcd"}
 sudo ufw allow 2380/tcp
 sudo ufw allow 2379/tcp
 ```
-````
 
-````{group-tab} k8s-dqlite
+:::
+
+:::{tab-item} k8s-dqlite
 Allow access to the k8s-dqlite port:
 
-```sh
+```sh {"name":"allow dqlite"}
 sudo ufw allow 9000/tcp
 ```
-````
-`````
 
-Allow access to the {{product}} daemon running on all nodes (required for
+:::
+::::
+
+Allow access to the {{product}} daemon running on all nodes (required 
 cluster formation):
 
-```sh
+```sh {"name":"allow daemon"}
 sudo ufw allow 6400/tcp
 ```
 
@@ -133,7 +160,7 @@ sudo ufw allow 6400/tcp
 Allow the cluster-wide Cilium agent health checks and VXLAN traffic on
 all nodes:
 
-```sh
+```sh {"name":"allow cilium"}
 sudo ufw allow 4240/tcp
 sudo ufw allow 8472/udp
 ```
@@ -142,7 +169,7 @@ sudo ufw allow 8472/udp
 
 Now enable UFW:
 
-```sh
+```sh {"name":"enable ufw"}
 sudo ufw enable
 ```
 

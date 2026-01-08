@@ -2,7 +2,7 @@
 
 summary: DISA STIG
 
-kill-timeout: 10m
+kill-timeout: 20m
 
 execute: |
   # function repeat_checks {
@@ -22,51 +22,74 @@ execute: |
   # }
   
   # FIPS
-  runme run "install ubuntu pro"
-  export your_pro_token=
-  runme run "attach token"
-  runme run "enable fips"
-  # runme run "reboot"
-  # sudo reboot
-  # sleep 10
-  # REBOOT 
-  echo "after reboot"
-  sleep 10
+  if [ ! -f /root/fips ]; then
+        echo "Doing FIPS and rebooting..."
+        touch /root/fips
+        sync
+        runme run "install ubuntu pro"
+        export your_pro_token=
+        runme run "attach token"
+        runme run "enable fips"
+        # # runme run "reboot"
+        # # sudo reboot
+        # # sleep 10
+        echo "before reboot"
+        # Only reboot if we haven't rebooted yet (counter is 0)
+          # if [ "$SPREAD_REBOOT" = "0" ]; then
+              # echo "This is the first run. Rebooting now..."
+        REBOOT
+    fi
+          # fi
+        # sync
+        # REBOOT 
+  echo "I am back! SPREAD_REBOOT is now $SPREAD_REBOOT"
+  # # no reboot yet so this will fail
   runme run "verify fips" 
-  # verify that the output is 1
+  # # verify that the output is 1
   runme run "install core22"
   sudo snap install k8s --classic --channel=1.34-classic/stable
   echo "done fips"
 
-  # UFW 
-  runme run "install ufw"
-  runme run "verify ufw install"
-  # need to check here if it is installed correctly
-  runme run "allow openssh"
-  runme run "packet forwarding"
-  awk '/^```\{"name": "allow system wide forward"} /, /^\`\`\`$/' ufw.md 
-  runme run "allow api"
-  runme run "allow kubelet"
-  runme run "allow kube-controller-manager"
-  sudo ufw allow 2380/tcp
-  sudo ufw allow 2379/tcp
-  runme run "allow daemon"
-  runme run "allow cilium"
-  # needs a y 
-  runme run "enable ufw"
+  # # UFW 
+  if [ ! -f /root/ufw ]; then
+    echo "Doing ufw"
+        touch /root/ufw
+        sync
+    runme run "install ufw"
+    runme run "verify ufw install"
+    # need to check here if it is installed correctly
+    runme run "allow openssh"
+    runme run "packet forwarding"
+    # awk '/^```\{"name": "allow system wide forward"} /, /^\`\`\`$/' ufw.md 
+    runme run "allow by subnet forward"
+    # if  I want to test the system wide one then we need to edit the file 
+    runme run "allow api"
+    runme run "allow kubelet"
+    runme run "allow kube-controller-manager"
+    runme run "allow etcd"
+    runme run "allow daemon"
+    # sudo ufw allow 2380/tcp
+    # sudo ufw allow 2379/tcp
+    runme run "allow daemon"
+    runme run "allow cilium"
+    # # needs a y 
+    # # echo "y" | runme run "enable ufw"
+    echo "done ufw"
+  fi
 
   # DISA STIG
+  echo "starting DISA STIG"
   runme run "install usg"
   runme run "audit usg"
   runme run "apply usg rules"
-  # runme run "reboot"
-  runme run "kernel config"
-  runme run "control plane bootstrap"
+  # # runme run "reboot"
+  # runme run "kernel config"
+  # runme run "control plane bootstrap"
 
-  # DISA STIG audit
-  runme run --all --filename=disa-audit.md  --skip-prompts
+  # # DISA STIG audit
+  # runme run --all --filename=disa-audit.md  --skip-prompts
 
-debug: | 
-  echo "try to sleep"
-  sleep 10 
-  echo "out of sleep"
+# debug: | 
+#   echo "try to sleep"
+#   sleep 10 
+#   echo "out of sleep"

@@ -43,7 +43,7 @@ You can check whether the current account has an empty password by running
 To automatically apply the recommended hardening changes:
 
 ```sh {"name":"apply usg rules"}
-sudo usg fix disa_stig
+printf "\n" | sudo usg fix disa_stig 
 ```
 
 Reboot to apply the changes:
