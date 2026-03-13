@@ -1,0 +1,25 @@
+:caption: ~/spread_test_example/tests/charm/task.yaml
+
+###########################################
+# IMPORTANT
+# Comments matter!
+# The docs use the wrapping comments as
+# markers for including said instructions
+# as snippets in the docs.
+###########################################
+summary: Example charm tutorial
+
+kill-timeout: 10m
+
+execute: |
+  runme run "info on k8s"
+  runme run "info on k8s worker"
+  runme run "install k8s charm"
+  #Need to put back in watch 
+  juju wait-for machine 0
+  runme run "watch juju status"
+  runme run "install k8s worker charm"
+  juju wait-for machine 1
+  runme run "integrate worker"
+  runme run "watch juju status"
+
