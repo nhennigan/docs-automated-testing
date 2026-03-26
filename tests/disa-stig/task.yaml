@@ -31,8 +31,6 @@ execute: |
         runme run "attach token"
         runme run "enable fips"
         # # runme run "reboot"
-        # # sudo reboot
-        # # sleep 10
         echo "before reboot"
         # Only reboot if we haven't rebooted yet (counter is 0)
           # if [ "$SPREAD_REBOOT" = "0" ]; then

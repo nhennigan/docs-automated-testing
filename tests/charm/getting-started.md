@@ -75,7 +75,7 @@ components (i.e. the `k8s` snap ). This may take a few minutes depending on
 your cloud. You can monitor progress by watching the Juju status output:
 
 ```{"name":"watch juju status"}
-juju status 
+juju status --watch 2s
 ```
 
 When the status reports that K8s is "idle/ready" you have successfully deployed

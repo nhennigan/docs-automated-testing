@@ -15,11 +15,17 @@ execute: |
   runme run "info on k8s"
   runme run "info on k8s worker"
   runme run "install k8s charm"
-  #Need to put back in watch 
+  # The watch needs this exported to work
+  export TERM=xterm-256color
   juju wait-for machine 0
-  runme run "watch juju status"
+  # Wait for does not exit so commenting this out
+  # runme run "watch juju status"
   runme run "install k8s worker charm"
   juju wait-for machine 1
   runme run "integrate worker"
-  runme run "watch juju status"
+  juju status 
+  sleep 60 
+  juju status
+  # Again watch will just time out eventually
+  #runme run "watch juju status"
 
